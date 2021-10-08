@@ -1,0 +1,16 @@
+[
+{
+  "modid": "activitychecker",
+  "name": "ActivityChecker",
+  "description": "A Hypixel mod that checks other players' activity through simple commands",
+  "version": "1.0",
+  "mcversion": "1.8",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["2stinkysocks"],
+  "credits": "2stinkysocks",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
