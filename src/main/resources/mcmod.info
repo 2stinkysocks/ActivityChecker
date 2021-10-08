@@ -3,7 +3,7 @@
   "modid": "activitychecker",
   "name": "ActivityChecker",
   "description": "A Hypixel mod that checks other players' activity through simple commands",
-  "version": "1.0",
+  "version": "1.1",
   "mcversion": "1.8",
   "url": "",
   "updateUrl": "",
