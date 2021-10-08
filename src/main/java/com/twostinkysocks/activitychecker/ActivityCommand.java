@@ -41,7 +41,10 @@ public class ActivityCommand extends SimpleCommand.ProcessCommandRunnable {
                     String uuid = element.get("id").getAsString();
 
                     // hypixel api
-
+                    if(ActivityChecker.getConfig().get("api", "key", "" ) == null) {
+                        sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Invalid request! (Try running /api new)"));
+                        return;
+                    }
                     url = new URL("https://api.hypixel.net/status?uuid=" + uuid + "&key=" + ActivityChecker.getConfig().get("api", "key", "").getString());
                     connection = (HttpURLConnection) url.openConnection();
                     connection.setRequestMethod("GET");
@@ -63,9 +66,11 @@ public class ActivityCommand extends SimpleCommand.ProcessCommandRunnable {
                         boolean online = element.getAsJsonObject("session").get("online").getAsBoolean();
                         String gameType = "";
                         String mode = "";
+                        String map = "";
                         if(online) {
-                            gameType = element.getAsJsonObject("session").get("gameType").getAsString();
-                            mode = element.getAsJsonObject("session").get("mode").getAsString();
+                            if(element.getAsJsonObject("session").get("gameType") != null) gameType = element.getAsJsonObject("session").get("gameType").getAsString();
+                            if(element.getAsJsonObject("session").get("mode") != null) mode = element.getAsJsonObject("session").get("mode").getAsString();
+                            if(element.getAsJsonObject("session").get("map") != null) map = element.getAsJsonObject("session").get("map").getAsString();
                         }
 
                         StringBuilder message = new StringBuilder("");
@@ -74,6 +79,7 @@ public class ActivityCommand extends SimpleCommand.ProcessCommandRunnable {
                         if(online) {
                             message.append(EnumChatFormatting.AQUA + "  Playing: " + gameType + "\n\n");
                             message.append(EnumChatFormatting.AQUA + "  Mode: " + mode + "\n\n");
+                            message.append(EnumChatFormatting.AQUA + "  Map: " + map + "\n\n");
                         }
                         message.append(EnumChatFormatting.GREEN + "---------------------------------");
                         sender.addChatMessage(new ChatComponentText(message.toString()));
@@ -82,9 +88,8 @@ public class ActivityCommand extends SimpleCommand.ProcessCommandRunnable {
                 }
             } catch(Exception e) {
                 sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "An unexpected error has occured."));
-                for(StackTraceElement el : e.getStackTrace()) {
-                    sender.addChatMessage(new ChatComponentText(el.toString()));
-                }
+                sender.addChatMessage(new ChatComponentText(e.getMessage()));
+                sender.addChatMessage(new ChatComponentText(e.getStackTrace()[0].toString()));
             }
 
         }
